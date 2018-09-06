@@ -62,7 +62,7 @@ func TestNew(t *testing.T) {
 		t.Errorf("error res body: %s", w.Body.String())
 	}
 
-	h = c.Wrap(nil)
+	h = c.WrapFunc(nil)
 	w = httptest.NewRecorder()
 	h.ServeHTTP(w, req)
 
