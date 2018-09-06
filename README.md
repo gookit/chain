@@ -1,5 +1,10 @@
 # middleware chain
 
+[![GoDoc](https://godoc.org/github.com/gookit/chain?status.svg)](https://godoc.org/github.com/gookit/chain)
+[![Build Status](https://travis-ci.org/gookit/chain.svg?branch=master)](https://travis-ci.org/gookit/chain)
+[![Coverage Status](https://coveralls.io/repos/github/gookit/chain/badge.svg?branch=master)](https://coveralls.io/github/gookit/chain?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gookit/chain)](https://goreportcard.com/report/github.com/gookit/chain)
+
 Is a simple http middleware chain implement.
 
 ## Godoc
@@ -47,6 +52,7 @@ func main() {
 	}))
  
 	http.ListenAndServe(":8090", h)
+	// Output: abc-(CORE)-CBA
 }
 ```
 
