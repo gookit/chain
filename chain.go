@@ -1,7 +1,9 @@
 // Package chain is a simple http middleware chain implement.
 package chain
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // Middleware definition
 type Middleware func(h http.Handler) http.Handler
@@ -11,8 +13,8 @@ type Chain []Middleware
 
 // New a middleware chain.
 // Usage:
-// 	c := chain.New(handler0, handler1)
-//  myHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 	c := chain.New(middleware0, middleware1)
+//	myHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 // 		w.Write([]byte("hello"))
 // 		w.WriteHeader(200)
 // 	})
@@ -23,9 +25,20 @@ func New(chain ...Middleware) Chain {
 }
 
 // Use more middleware
-func (c *Chain) Use(mds ...Middleware) *Chain {
+func (c *Chain) Use(mds ...Middleware) Chain {
 	*c = append(*c, mds...)
-	return c
+	return *c
+}
+
+// Extend old chain, returns new chain
+func (c Chain) Extend(mds ...Middleware) Chain {
+	nc := make([]Middleware, len(c)+len(mds))
+	// because make() add length, so cannot use append()
+	// nc = append(nc, mds...)
+	copy(nc, mds)
+	copy(nc[len(mds):], c)
+
+	return nc
 }
 
 // Wrap all middleware to the core http handler

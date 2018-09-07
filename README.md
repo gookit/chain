@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/gookit/chain/badge.svg?branch=master)](https://coveralls.io/github/gookit/chain?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gookit/chain)](https://goreportcard.com/report/github.com/gookit/chain)
 
-Is a simple http middleware chain implement.
+A simple http middleware chain implement.
 
 ## Godoc
 
@@ -24,19 +24,22 @@ import (
 )
 
 func main() {
-	c := chain.New(func(h http.Handler) http.Handler {
+	middleware0 := func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("a"))
 			h.ServeHTTP(w, r)
 			w.Write([]byte("A"))
 		})
-	}, func(h http.Handler) http.Handler {
+	}
+	middleware1 := func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("b"))
 			h.ServeHTTP(w, r)
 			w.Write([]byte("B"))
 		})
-	})
+	}
+
+	c := chain.New(middleware0, middleware1)
 
 	c.Use(func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
